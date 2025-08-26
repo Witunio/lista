@@ -1,186 +1,157 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Dołącz do społeczności graczy</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #121212;
-      color: #ffffff;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<title>Dołącz do społeczności graczy</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-    h2 {
-      margin-top: 30px;
-      color: #00ffea;
-      text-shadow: 0 0 5px #00ffea, 0 0 10px #00ffea;
-    }
+h2 {
+  color: #00ffea;
+  text-align: center;
+  margin-top: 30px;
+  text-shadow: 0 0 5px #00ffea, 0 0 10px #00ffea;
+}
 
-    #form {
-      margin: 20px auto;
-      padding: 25px;
-      background: #1e1e1e;
-      width: 320px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #00ffea55;
-    }
+#form {
+  margin: 20px auto;
+  padding: 25px;
+  background: #1b1b1b;
+  border-radius: 15px;
+  width: 350px;
+  box-shadow: 0 0 15px #00ffea33;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    input {
-      width: 90%;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #00ffea;
-      background: #121212;
-      color: #ffffff;
-    }
+input {
+  width: 90%;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #00ffea;
+  background: #0a0a0a;
+  color: #fff;
+}
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #00ffea;
-      color: #121212;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.2s;
-    }
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #00ffea;
+  color: #0a0a0a;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-    button:hover {
-      background: #00d4b8;
-      box-shadow: 0 0 10px #00ffeaaa;
-    }
+button:hover {
+  background: #00d4b8;
+}
 
-    #lista {
-      margin-top: 25px;
-      background: #1e1e1e;
-      width: 320px;
-      margin-left:auto;
-      margin-right:auto;
-      padding: 15px;
-      border-radius: 15px;
-      text-align: left;
-      box-shadow: 0 0 15px #00ffea33;
-    }
+#lista {
+  margin: 20px auto;
+  background: #1b1b1b;
+  width: 350px;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00ffea33;
+  flex-grow: 1;
+}
 
-    #lista h3 {
-      margin-top: 0;
-      color: #00ffea;
-    }
+#lista h3 {
+  margin-top: 0;
+  color: #00ffea;
+}
 
-    #gracze li {
-      margin: 5px 0;
-      padding: 3px 0;
-      border-bottom: 1px solid #00ffea33;
-    }
+#gracze li {
+  border-bottom: 1px solid #00ffea33;
+  padding: 4px 0;
+}
 
-    #regulamin-box {
-      font-size: 12px;
-      margin-top: 30px;
-      color: #00ffeaaa;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+#footer {
+  font-size: 10px;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: 10px;
+  color: #aaa;
+}
 
-    #regulamin {
-      display: none;
-      font-size: 12px;
-      margin-top: 10px;
-      color: #ccc;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-    }
+#footer a {
+  color: #00ffea;
+  text-decoration: none;
+}
 
-    #footer {
-      font-size: 10px;
-      color: #555;
-      margin-top: 40px;
-      margin-bottom: 20px;
-    }
-
-    #footer a {
-      color: #00ffea;
-      text-decoration: none;
-    }
-
-    #footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+#footer a:hover {
+  text-decoration: underline;
+}
+</style>
 </head>
 <body>
-  <h2>Dołącz do społeczności graczy</h2>
 
-  <div id="form">
-    <input id="nick" type="text" placeholder="Twój nick (wymagany)" required>
-    <input id="discord" type="text" placeholder="Twój Discord (opcjonalnie)">
-    <button onclick="wyslij()">Dodaj</button>
-  </div>
+<h2>Dołącz do społeczności graczy</h2>
 
-  <div id="lista">
-    <h3>Lista graczy:</h3>
-    <ul id="gracze"></ul>
-  </div>
+<div id="form">
+  <input id="nick" type="text" placeholder="Twój nick (wymagany)">
+  <input id="discord" type="text" placeholder="Twój Discord (opcjonalnie)">
+  <button onclick="wyslij()">Dodaj</button>
+</div>
 
-  <div id="regulamin-box" onclick="toggleRegulamin()">Regulamin</div>
-  <div id="regulamin">
-    Dodając nick wyrażasz zgodę na przetwarzanie danych w celu wyświetlenia na liście i wysłania na Discord.
-  </div>
+<div id="lista">
+  <h3>Lista graczy:</h3>
+  <ul id="gracze"></ul>
+</div>
 
-  <div id="footer">
-    2025 © wituniu - <a href="https://guns.lol/wituniu" target="_blank">guns.lol/wituniu</a>
-  </div>
+<div id="footer">
+Dołączając akceptujesz, że zbieramy dane takie jak IP, przeglądarka, język i strefa czasowa.<br>
+2025 © wituniu - <a href="https://guns.lol/wituniu" target="_blank">guns.lol/wituniu</a>
+</div>
 
-  <script>
-    const API_URL = "https://workers-playground-super-mouse-fc07.witunuipl.workers.dev"; // Twój Worker
+<script>
+const API_URL = "https://workers-playground-super-mouse-fc07.witunuipl.workers.dev"; // Twój Worker
 
-    async function wyslij() {
-      const nick = document.getElementById("nick").value.trim();
-      const discord = document.getElementById("discord").value.trim();
+async function wyslij() {
+  const nick = document.getElementById("nick").value.trim();
+  const discord = document.getElementById("discord").value.trim();
+  if(!nick){ alert("Podaj nick!"); return; }
 
-      if (!nick) {
-        alert("Podaj nick!");
-        return;
-      }
+  await fetch(API_URL + "/add", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({nick, discord})
+  });
 
-      // Wyślij dane do Workera
-      await fetch(API_URL + "/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nick, discord })
-      });
+  document.getElementById("nick").value = "";
+  document.getElementById("discord").value = "";
 
-      document.getElementById("nick").value = "";
-      document.getElementById("discord").value = "";
+  pobierzListe();
+}
 
-      pobierzListe();
-    }
+async function pobierzListe() {
+  const res = await fetch(API_URL + "/list");
+  const data = await res.json();
+  const ul = document.getElementById("gracze");
+  ul.innerHTML = "";
+  data.forEach(u => {
+    const li = document.createElement("li");
+    li.textContent = u.nick + (u.discord ? " ("+u.discord+")" : "");
+    ul.appendChild(li);
+  });
+}
 
-    async function pobierzListe() {
-      const res = await fetch(API_URL + "/list");
-      const data = await res.json();
+// Pobierz listę przy starcie
+pobierzListe();
+</script>
 
-      const ul = document.getElementById("gracze");
-      ul.innerHTML = "";
-      data.forEach(u => {
-        const li = document.createElement("li");
-        li.textContent = u.nick + (u.discord ? " (" + u.discord + ")" : "");
-        ul.appendChild(li);
-      });
-    }
-
-    function toggleRegulamin() {
-      const reg = document.getElementById("regulamin");
-      reg.style.display = reg.style.display === "none" ? "block" : "none";
-    }
-
-    pobierzListe();
-  </script>
 </body>
 </html>
-
