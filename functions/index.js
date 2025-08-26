@@ -12,14 +12,13 @@ export default {
         const nick = (data.nick || "").trim();
         const discord = (data.discord || "").trim();
 
-        if (!nick) return new Response(JSON.stringify({ error: "Brak nicku" }), { status: 400 });
+        if (!nick) return new Response(JSON.stringify({ error: "Podaj nick!" }), { status: 400 });
 
-        // Pobierz listę z KV
+        // Pobierz aktualną listę graczy z KV
         let usersRaw = await env.USERS.get("list").catch(() => null);
         let users = usersRaw ? JSON.parse(usersRaw) : [];
 
-        const newUser = { nick, discord, ip, userAgent, lang, time };
-        users.push(newUser);
+        users.push({ nick, discord, ip, userAgent, lang, time });
 
         // Zapisz do KV
         await env.USERS.put("list", JSON.stringify(users));
@@ -50,7 +49,6 @@ Czas: ${time}`
       }
 
       return new Response("Not found", { status: 404 });
-
     } catch (err) {
       console.log("Błąd Workera:", err);
       return new Response(JSON.stringify({ error: "Błąd serwera" }), { status: 500 });
