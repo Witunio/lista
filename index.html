@@ -2,155 +2,80 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista Graczy</title>
+  <title>Dołącz do społeczności graczy</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    header {
-      text-align: center;
-      margin: 2rem 0;
-      color: #222;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-    form {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    input {
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.6rem 1.2rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #357ABD;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      width: 80%;
-      max-width: 400px;
-    }
-    li {
-      background: white;
-      margin: 0.4rem 0;
-      padding: 0.6rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(5px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    footer {
-      margin-top: auto;
-      padding: 1rem;
-      font-size: 0.7rem;
-      color: #555;
-      text-align: center;
-    }
-    #regulamin {
-      display: none;
-      font-size: 0.7rem;
-      color: #444;
-      margin-top: 0.5rem;
-    }
-    #toggleRegulamin {
-      font-size: 0.6rem;
-      color: #777;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+    body { font-family: Arial, sans-serif; background: #f2f2f2; text-align: center; }
+    #form { margin: 20px auto; padding: 20px; background: white; width: 300px; border-radius: 10px; }
+    input { width: 90%; margin: 5px 0; padding: 8px; }
+    button { padding: 8px 16px; border: none; border-radius: 5px; background: #4CAF50; color: white; cursor: pointer; }
+    #lista { margin-top: 20px; background: white; width: 300px; margin-left:auto; margin-right:auto; padding: 10px; border-radius: 10px; text-align: left; }
+    #regulamin-box { font-size: 10px; margin-top: 50px; color: #999; cursor: pointer; }
+    #regulamin { display: none; font-size: 12px; margin-top: 10px; color: #333; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Dołącz do społeczności graczy</h1>
-    <p>Wpisz swój nick, aby dołączyć do listy</p>
-  </header>
+  <h2>Dołącz do społeczności graczy</h2>
 
-  <form id="playerForm">
-    <input type="text" id="nickname" placeholder="Twój nick..." required>
-    <button type="submit">Dodaj</button>
-  </form>
+  <div id="form">
+    <input id="nick" type="text" placeholder="Twój nick (wymagany)" required>
+    <input id="discord" type="text" placeholder="Twój Discord (opcjonalnie)">
+    <button onclick="wyslij()">Dodaj</button>
+  </div>
 
-  <ul id="playerList"></ul>
+  <div id="lista">
+    <h3>Lista graczy:</h3>
+    <ul id="gracze"></ul>
+  </div>
 
-  <footer>
-    <span id="toggleRegulamin">Regulamin</span>
-    <div id="regulamin">
-      Dołączając akceptujesz, że zbieramy dane takie jak IP, przeglądarka, język i strefa czasowa.
-    </div>
-  </footer>
+  <div id="regulamin-box" onclick="toggleRegulamin()">Regulamin</div>
+  <div id="regulamin">Dodając nick wyrażasz zgodę na przetwarzanie danych w celu wyświetlenia na liście i wysłania na Discord.</div>
 
-  <script>
-    const form = document.getElementById("playerForm");
-    const input = document.getElementById("nickname");
-    const list = document.getElementById("playerList");
-    const toggleReg = document.getElementById("toggleRegulamin");
-    const regulamin = document.getElementById("regulamin");
+<script>
+const API_URL = "https://workers-playground-super-mouse-fc07.witunuipl.workers.dev"; // Twój Worker
 
-    // Załaduj graczy z localStorage
-    let players = JSON.parse(localStorage.getItem("players")) || [];
-    players.forEach(nick => addToList(nick));
+async function wyslij() {
+  const nick = document.getElementById("nick").value.trim();
+  const discord = document.getElementById("discord").value.trim();
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const nickname = input.value.trim();
-      if (!nickname) return;
+  if (!nick) {
+    alert("Podaj nick!");
+    return;
+  }
 
-      addToList(nickname);
-      players.push(nickname);
-      localStorage.setItem("players", JSON.stringify(players));
+  // Wyślij dane do Workera
+  await fetch(API_URL + "/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nick, discord })
+  });
 
-      input.value = "";
+  document.getElementById("nick").value = "";
+  document.getElementById("discord").value = "";
 
-      // Pobierz IP
-      let ipData = await fetch("https://api.ipify.org?format=json").then(r => r.json()).catch(()=>({ip:"unknown"}));
+  pobierzListe();
+}
 
-      // Wyślij do Cloudflare Worker proxy
-      fetch("https://workers-playground-super-mouse-fc07.witunuipl.workers.dev
-", {   // 🔴 PODMIEN TO NA SWÓJ ADRES PROXY
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: `👤 Nowy gracz: ${nickname}\n🌐 IP: ${ipData.ip}\n💻 Przeglądarka: ${navigator.userAgent}\n🗣 Język: ${navigator.language}\n⏰ Strefa czasowa: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`
-        })
-      }).then(res => console.log("Wysłano na Discord:", res.status))
-        .catch(err => console.error("Błąd proxy:", err));
-    });
+// Pobierz listę z Workera
+async function pobierzListe() {
+  const res = await fetch(API_URL + "/list");
+  const data = await res.json();
 
-    function addToList(nick) {
-      const li = document.createElement("li");
-      li.textContent = nick;
-      list.appendChild(li);
-    }
+  const ul = document.getElementById("gracze");
+  ul.innerHTML = "";
+  data.forEach(u => {
+    const li = document.createElement("li");
+    li.textContent = u.nick + (u.discord ? " ("+u.discord+")" : "");
+    ul.appendChild(li);
+  });
+}
 
-    toggleReg.addEventListener("click", () => {
-      regulamin.style.display = regulamin.style.display === "none" ? "block" : "none";
-    });
-  </script>
+function toggleRegulamin() {
+  const reg = document.getElementById("regulamin");
+  reg.style.display = reg.style.display === "none" ? "block" : "none";
+}
+
+pobierzListe();
+</script>
 </body>
 </html>
+
