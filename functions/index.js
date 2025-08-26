@@ -14,7 +14,7 @@ export default {
 
         if (!nick) return new Response(JSON.stringify({ error: "Brak nicku" }), { status: 400 });
 
-        // Pobierz aktualną listę z KV
+        // Pobierz listę z KV
         let usersRaw = await env.USERS.get("list").catch(() => null);
         let users = usersRaw ? JSON.parse(usersRaw) : [];
 
@@ -24,7 +24,7 @@ export default {
         // Zapisz do KV
         await env.USERS.put("list", JSON.stringify(users));
 
-        // Wyślij powiadomienie na Discord (bez blokowania w razie błędu)
+        // Wyślij powiadomienie na Discord
         if (env.DISCORD_WEBHOOK) {
           fetch(env.DISCORD_WEBHOOK, {
             method: "POST",
