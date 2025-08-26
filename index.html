@@ -2,32 +2,252 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dołącz do społeczności graczy</title>
 <style>
-/* ... (stylowanie pozostaje bez zmian) ... */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f0ff 0%, #e6e6fa 100%);
+  color: #2c2c2c;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  color: #7c4dff;
+  font-size: 2.2em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  animation: textPulse 3s infinite;
+}
+
+@keyframes textPulse {
+  0%, 100% { color: #7c4dff; text-shadow: 2px 2px 4px rgba(124,77,255,0.3); }
+  50% { color: #9c75ff; text-shadow: 2px 2px 8px rgba(156,117,255,0.5); }
+}
+
+.form-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(124,77,255,0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(124,77,255,0.1);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #7c4dff;
+  border-radius: 12px;
+  font-size: 16px;
+  background: rgba(255,255,255,0.9);
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #9c75ff;
+  box-shadow: 0 0 0 3px rgba(124,77,255,0.1);
+  transform: translateY(-2px);
+}
+
+.btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #7c4dff 0%, #9c75ff 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(124,77,255,0.3);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(124,77,255,0.4);
+  background: linear-gradient(135deg, #9c75ff 0%, #7c4dff 100%);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}
+
+.message {
+  text-align: center;
+  margin-top: 15px;
+  min-height: 20px;
+  font-weight: 500;
+}
+
+.error { color: #ff4757; }
+.success { color: #2ed573; }
+
+.list-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(124,77,255,0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(124,77,255,0.1);
+}
+
+.list-container h3 {
+  color: #7c4dff;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+#gracze {
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#gracze li {
+  padding: 12px;
+  margin: 8px 0;
+  background: rgba(124,77,255,0.05);
+  border-radius: 10px;
+  border-left: 4px solid #7c4dff;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+#gracze li:hover {
+  background: rgba(124,77,255,0.1);
+  transform: translateX(5px);
+}
+
+.rules {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.rules-btn {
+  color: #7c4dff;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 5px;
+}
+
+.rules-content {
+  display: none;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+  background: rgba(255,255,255,0.8);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+
+.footer a {
+  color: #7c4dff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .form-container,
+  .list-container {
+    padding: 20px;
+  }
+  
+  .header h2 {
+    font-size: 1.8em;
+  }
+}
 </style>
 </head>
 <body>
 
-<h2>Dołącz do społeczności graczy</h2>
+<div class="container">
+  <div class="header">
+    <h2>Dołącz do społeczności graczy</h2>
+  </div>
 
-<div id="form">
-  <input id="nick" type="text" placeholder="Twój nick (wymagany)">
-  <input id="discord" type="text" placeholder="Twój Discord (opcjonalnie)">
-  <button onclick="wyslij()">Dodaj</button>
-  <div id="message" style="margin-top: 10px; min-height: 20px;"></div>
+  <div class="form-container">
+    <div class="input-group">
+      <input id="nick" type="text" placeholder="Twój nick (wymagany)" onkeypress="if(event.key=='Enter')wyslij()">
+    </div>
+    <div class="input-group">
+      <input id="discord" type="text" placeholder="Twój Discord (opcjonalnie)" onkeypress="if(event.key=='Enter')wyslij()">
+    </div>
+    <button class="btn" onclick="wyslij()">Dodaj</button>
+    <div id="message" class="message"></div>
+  </div>
+
+  <div class="list-container">
+    <h3>Lista graczy:</h3>
+    <ul id="gracze"></ul>
+  </div>
+
+  <div class="rules">
+    <button class="rules-btn" onclick="toggleRegulamin()">Regulamin</button>
+    <div id="regulamin" class="rules-content">
+      Dołączając akceptujesz, że zbieramy dane takie jak IP, przeglądarka i język w celach statystycznych i bezpieczeństwa.
+    </div>
+  </div>
 </div>
 
-<div id="lista">
-  <h3>Lista graczy:</h3>
-  <ul id="gracze"></ul>
-</div>
-
-<div id="regulamin-box" onclick="toggleRegulamin()">Regulamin</div>
-<div id="regulamin">Dołączając akceptujesz, że zbieramy dane takie jak IP, przeglądarka </div>
-
-<div id="footer">
-2025 © wituniu - <a href="https://guns.lol/wituniu" target="_blank">guns.lol/wituniu</a>
+<div class="footer">
+  2025 © wituniu - <a href="https://guns.lol/wituniu" target="_blank">guns.lol/wituniu</a>
 </div>
 
 <script>
@@ -36,8 +256,8 @@ const API_URL = "https://workers-playground-super-mouse-fc07.wituniupl.workers.d
 function showMessage(text, isError = false) {
   const messageDiv = document.getElementById("message");
   messageDiv.textContent = text;
-  messageDiv.style.color = isError ? 'red' : 'green';
-  setTimeout(() => { messageDiv.textContent = ''; }, 3000);
+  messageDiv.className = isError ? 'message error' : 'message success';
+  setTimeout(() => { messageDiv.textContent = ''; messageDiv.className = 'message'; }, 3000);
 }
 
 async function wyslij() {
@@ -66,14 +286,14 @@ async function wyslij() {
       return;
     }
 
-    showMessage("Gracz dodany pomyślnie!");
+    showMessage("✅ Gracz dodany pomyślnie!");
     document.getElementById("nick").value = "";
     document.getElementById("discord").value = "";
     await pobierzListe();
     
   } catch (e) {
     console.error("Błąd:", e);
-    showMessage("Nie udało się połączyć z serwerem", true);
+    showMessage("❌ Nie udało się połączyć z serwerem", true);
   }
 }
 
@@ -82,6 +302,7 @@ async function pobierzListe() {
     const res = await fetch(API_URL + "/list");
     if (!res.ok) {
       console.error("Błąd pobierania listy:", res.status);
+      document.getElementById("gracze").innerHTML = "<li>Błąd ładowania listy</li>";
       return;
     }
     
